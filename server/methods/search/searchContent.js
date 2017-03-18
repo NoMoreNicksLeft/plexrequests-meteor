@@ -7,7 +7,17 @@ Meteor.methods({
 		if (searchType !== "Music") {
 			var type = (searchType === "Movies") ? "movie" : "tv";
 
-			if (type === "tv") {
+			if (searchType === "Books") {
+				try {
+					var result = Meteor.call("GBooksSearch", searchterm, "book")
+
+				} catch (error) {
+					logger.error("Google Books Error -> " + error.message);
+					return [];
+
+				}
+			}
+			else if (type === "tv") {
 
 				try {
 					var result = Meteor.call("tvmaze", searchterm, type)
@@ -48,6 +58,10 @@ Meteor.methods({
 
 		if (Settings.find({}).fetch()[0].searchOptionsTV) {
 			options.push("TV Shows");
+		}
+
+		if (Settings.find({}).fetch()[0].searchOptionsBOOKS) {
+			options.push("Books");
 		}
 
 		return options;

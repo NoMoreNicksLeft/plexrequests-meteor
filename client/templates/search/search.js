@@ -87,6 +87,7 @@ Template.search.events({
   'click .add-request': function (event) {
     var btn = $(event.target);
     var tvBtn = $(event.target).parent().parent().children().first();
+    var bookBtn = $(event.target).parent().parent().children().first();
     var requestTitle = this.title;
     var request = this;
     request.user = Session.get("user");
@@ -125,6 +126,24 @@ Template.search.events({
           tvBtn.html('<i class="fa fa-plus"></i> &nbsp; Request ');
         } else if (result === 'exists') {
           Bert.alert("TV Show has already been requested!", "info");
+          // tvBtn.hide();
+        }
+      })
+    } else if (this.media_type === "book") {
+      bookBtn.html('<i class="fa fa-spinner fa-spin"></i> &nbsp; Requesting... ');
+      Meteor.call("requestBook", request, function (error, result) {
+        if (error || result === false) {
+          console.error("Error requesting, please check server log");
+          bookBtn.html('<i class="fa fa-plus"></i> &nbsp; Request ');
+          Bert.alert("Couldn't submit request, please try again!", "danger");
+        } else if (result === true) {
+          Bert.alert("Successfully requested " + requestTitle + "!", "success");
+          // tvBtn.hide();
+        } else if (result === "limit") {
+          Bert.alert("You've exceeded your weekly limit!", "info");
+          bookBtn.html('<i class="fa fa-plus"></i> &nbsp; Request ');
+        } else if (result === 'exists') {
+          Bert.alert("Book has already been requested!", "info");
           // tvBtn.hide();
         }
       })

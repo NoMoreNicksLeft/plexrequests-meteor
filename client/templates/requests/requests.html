@@ -73,6 +73,9 @@
         {{#if searchType 'TV Shows'}}
             <img src="{{poster_path}}" class="img-responsive" alt="Poster">
           {{/if}}
+        {{#if searchType 'Books'}}
+            <img src="{{poster_path}}" class="img-responsive" alt="Poster">
+          {{/if}}
         {{#if searchType 'Movies'}}
             <img src="{{poster_path}}" class="img-responsive" alt="Poster">
           {{/if}}
@@ -81,6 +84,9 @@
             <ul class="request-details-list">
             {{#if searchType 'Movies'}}
             <h4><li><a href="http://www.imdb.com/title/{{imdb}}" target="_blank"><strong>{{title}}</strong></a></li></h4>
+            {{/if}}
+            {{#if searchType 'Books'}}
+            <h4><li><a href="https://www.googleapis.com/books/v1/volumes/{{gid}}" target="_blank"><strong>{{title}}</strong></a></li></h4>
             {{/if}}
             {{#if searchType 'TV Shows'}}
             <h4> <li><a href="{{link}}" target="_blank"><strong>{{title}} ({{year}})</strong></a></li></h4>    

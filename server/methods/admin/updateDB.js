@@ -17,7 +17,8 @@ Meteor.methods({
 		//Update documents using deprecitated 'approved'
 		var movies = Movies.find({approval_status: -1}).fetch();
 		var tv = TV.find({approval_status: -1}).fetch();
-		
+		var books = Books.find({approval_status: -1}).fetch();
+
 		for(i = 0; i < movies.length; i++) {
 			if(movies[i].approved) {
 				Movies.update({_id: movies[i]._id}, { $set: {approval_status: 1}});
@@ -33,6 +34,15 @@ Meteor.methods({
 			}
 			else {
 				TV.update({_id: tv[i]._id}, { $set: {approval_status: 0}});
+			}
+		}
+
+		for(i = 0; i < books.length; i++) {
+			if(books[i].approved) {
+				Books.update({_id: books[i]._id}, { $set: {approval_status: 1}});
+			}
+			else {
+				Books.update({_id: books[i]._id}, { $set: {approval_status: 0}});
 			}
 		}
 	}

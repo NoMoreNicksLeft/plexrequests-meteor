@@ -66,7 +66,7 @@ Template.requests.onCreated(function () {
         }
       }
       return Movies.find(filter, {sort: sort, skip: 0, limit: instance.loaded.get()});
-    } else {
+    } else if (instance.searchType.get() === "TV Shows") {
       if (selectedFilter !== "All Requests") {
         switch (selectedFilter) {
           case "Approved":
@@ -92,7 +92,33 @@ Template.requests.onCreated(function () {
         }
       }
       return TV.find(filter, {sort: sort, skip: 0, limit: instance.loaded.get()});
-    }
+    } else if (instance.searchType.get() === "Books") {
+      if (selectedFilter !== "All Requests") {
+        switch (selectedFilter) {
+          case "Approved":
+            filter = {approval_status: 1};
+            break;
+          case "Not Approved":
+            filter = {approval_status: 0};
+            break;
+          case "Downloaded":
+            filter = {downloaded: true};
+            break;
+          case "Not Downloaded":
+            filter = {downloaded: false};
+            break;
+          case "Denied":
+            filter = {approval_status: 2};
+            break;
+          case "Has Issues":
+            filter = {'issues.0': {$exists: true}};
+            break;
+          default:
+            filter = {};
+        }
+      }
+      return Books.find(filter, {sort: sort, skip: 0, limit: instance.loaded.get()});
+    } 
   }
 });
 
@@ -183,6 +209,8 @@ Template.requests.helpers({
     //Movie true/false
     var approval;
     if (this.imdb) {
+      approval = (this.downloaded) ? '<i class="fa fa-check success-icon"></i>': '<i class="fa fa-times error-icon"></i>';
+    } else if (this.gid) {
       approval = (this.downloaded) ? '<i class="fa fa-check success-icon"></i>': '<i class="fa fa-times error-icon"></i>';
     } else {
       //TV dowloaded:total

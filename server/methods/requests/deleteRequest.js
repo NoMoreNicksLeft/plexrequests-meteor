@@ -23,6 +23,14 @@ Meteor.methods({
 				logger.error("Deletion error -> " + error.message);
 				return false;
 			}
+		} else if (request.gid) {
+			try {
+				Books.remove(request._id);
+				return true;
+			} catch (error) {
+				logger.error("Deletion error -> " + error.message);
+				return false;
+			}
 		}
 	}
 });

@@ -2,6 +2,7 @@ Meteor.methods({
   getPosters: function () {
     var movies = Movies.find({$or: [{poster_path: {$exists: false}}, {poster_path: "/"}]}).fetch();
     var tv = TV.find({$or: [{poster_path: {$exists: false}}, {poster_path: "/"}]}).fetch();
+    var books = Books.find({$or: [{poster_path: {$exists: false}}, {poster_path: "/"}]}).fetch();
 
     movies.forEach(function (movie) {
       var poster = Meteor.call("movie", movie.id);
@@ -17,6 +18,15 @@ Meteor.methods({
       
       if (!poster) { poster = "/" }
       TV.update(show._id, {$set: {
+        poster_path: poster
+      }});
+    });
+
+    books.forEach(function (show) {
+      var poster = Meteor.call("book", show.id);
+      
+      if (!poster) { poster = "/" }
+      Books.update(show._id, {$set: {
         poster_path: poster
       }});
     });

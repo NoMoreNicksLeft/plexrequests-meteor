@@ -18,6 +18,14 @@ Meteor.methods({
 				logger.error("Adding issue error -> " + error.message);
 				return false;
 			}
+		} else if (request.gid) {
+			try {
+				Books.update(request._id, {$set: {issues: [] }});
+				return true;
+			} catch (error) {
+				logger.error("Adding issue error -> " + error.message);
+				return false;
+			}
 		}
 	}
 });

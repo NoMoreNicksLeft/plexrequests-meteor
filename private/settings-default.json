@@ -2,6 +2,7 @@
 	"searchOptions" : {
     "movies": true,
     "tv": true,
-    "music": false
+    "books": true,
+    "music": true
 	}
 }
